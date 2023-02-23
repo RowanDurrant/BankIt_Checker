@@ -29,13 +29,30 @@ BankItCheck = function(filename){
       message("\n",names(x[i]), " is too short (fewer than 200 bases).")
     }
     unacceptable = sum(freqs[colnames(freqs) %!in% c("a", "c", "g", "t", "n",
-                                                  "A", "C", "G", "T", "N", "-")])
+                                                  "A", "C", "G", "T", "N", "-",
+                                                  "U", "u", "R", "r", "Y", "y",
+                                                  "S", "s", "W", "w", "K", "k",
+                                                  "M", "m", "B", "b", "D", "d",
+                                                  "H", "h", "V", "v")])
     if(unacceptable > 0){
-      message("\n",names(x[i]), " contains these forbidden characters: \n", paste0(colnames(freqs)[which(colnames(freqs) %!in% 
-                                                                      c("a", "c", "g", "t", "n","A", "C", "G", "T", "N", "-") & 
+      message("\n",names(x[i]), " contains these non-IUPAC characters: \n", 
+              paste0(colnames(freqs)[which(colnames(freqs) %!in% c("a", "c", "g", "t", "n",
+                                                                    "A", "C", "G", "T", "N", "-",
+                                                                    "U", "u", "R", "r", "Y", "y",
+                                                                    "S", "s", "W", "w", "K", "k",
+                                                                    "M", "m", "B", "b", "D", "d",
+                                                                    "H", "h", "V", "v") & 
                                                                         freqs > 0) ], collapse="\n"))
       
-    }
+      
+      }
+    else if(sum(freqs[colnames(freqs) %!in% 
+                   c("a", "c", "g", "t", "n","A", "C", "G", "T", "N", "-")]) > 0){
+        message("Ambiguous nucleotides present in sequence '", names(x[i]),"': ", 
+                paste0(colnames(freqs)[which(colnames(freqs) %!in% c("a", "c", "g", "t", "n",
+                                                                     "A", "C", "G", "T", "N", "-") & 
+                                               freqs > 0) ], collapse="\n"), ". Please check if these are allowed.")
+      }
     if(sum(freqs[colnames(freqs) %in% c("n", "N")]) > sum(freqs)/2){
       message("\n", names(x[i]), " contains over 50% Ns, and will not be accepted as it is too low quality.")
       
