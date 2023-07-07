@@ -13,6 +13,7 @@ BankItCheck = function(filename){
   
   
   for(i in 1:length(x)){
+    x[i] = gsub("-","",x[i])
     if(nchar(names(x[i])) > 25){
       message("\nSequence ID ", names(x[i]), " is too long: must be 25 characters or less.")
     }
